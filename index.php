@@ -10,6 +10,12 @@
 </head>
 
 <body>
+    <header>
+        <a href="#">Projects</a>
+        <a href="#">Employees</a>
+    </header>
+
+
     <div class="container">
         <?php
         $servername = 'localhost';
