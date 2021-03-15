@@ -10,10 +10,11 @@
 </head>
 
 <body>
-    <header>
-        <a href="#">Projects</a>
-        <a href="#">Employees</a>
-    </header>
+    <?php print('<header>
+                <a href="?path=projects/">Projects</a>
+                <a href="?path=employees/">Employees</a>
+            </header>');
+    ?>
 
     <div class="container">
         <?php
@@ -30,46 +31,47 @@
         $sqlProj = 'SELECT id, Project, Employees FROM projects';
         $resultProj = mysqli_query($conn, $sqlProj);
 
-        print('<table>
+        if ($_GET['path'] == 'employees/') {
+            print('<table>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Projects</th>
             </tr>');
 
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                print('<tr>
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    print('<tr>
                          <td>' . $row["id"] . '</td>' .
-                    '<td>' . $row["Name"] . '</td>' .
-                    '<td>' . $row["Projects"] . '</td>
+                        '<td>' . $row["Name"] . '</td>' .
+                        '<td>' . $row["Projects"] . '</td>
                        </tr>');
+                }
+            } else {
+                print('No results');
             }
+            print('</table>');
         } else {
-            print('No results');
-        }
-        print('</table>');
-
-
-        print('<table>
+            print('<table>
             <tr>
                 <th>ID</th>
                 <th>Project</th>
                 <th>Employee(s)</th>
             </tr>');
 
-        if (mysqli_num_rows($resultProj) > 0) {
-            while ($row = mysqli_fetch_assoc($resultProj)) {
-                print('<tr>
+            if (mysqli_num_rows($resultProj) > 0) {
+                while ($row = mysqli_fetch_assoc($resultProj)) {
+                    print('<tr>
                          <td>' . $row["id"] . '</td>' .
-                    '<td>' . $row["Project"] . '</td>' .
-                    '<td>' . $row["Employees"] . '</td>
+                        '<td>' . $row["Project"] . '</td>' .
+                        '<td>' . $row["Employees"] . '</td>
                        </tr>');
+                }
+            } else {
+                print('No results');
             }
-        } else {
-            print('No results');
+            print('</table>');
         }
-        print('</table>');
 
         mysqli_close($conn);
 
