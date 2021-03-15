@@ -30,10 +30,6 @@
         $sqlProj = 'SELECT id, Project, Employees FROM projects';
         $resultProj = mysqli_query($conn, $sqlProj);
 
-        var_dump($result);
-        print('<br>');
-        var_dump($resultProj);
-
         print('<table>
             <tr>
                 <th>ID</th>
