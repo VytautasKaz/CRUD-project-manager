@@ -15,23 +15,24 @@
         <a href="#">Employees</a>
     </header>
 
-
     <div class="container">
         <?php
-        $servername = 'localhost';
+        $serverName = 'localhost';
         $username = 'root';
         $password = 'mysql';
         $dbName = 'sprint2-db';
 
-        $conn = mysqli_connect($servername, $username, $password, $dbName);
-
-        // if (!$conn) {
-        //     die("Connection failed: " . mysqli_connect_error());
-        // }
-        // echo "Connected successfully";
+        $conn = mysqli_connect($serverName, $username, $password, $dbName);
 
         $sql = 'SELECT id, Name, Projects FROM employees';
         $result = mysqli_query($conn, $sql);
+
+        $sqlProj = 'SELECT id, Project, Employees FROM projects';
+        $resultProj = mysqli_query($conn, $sqlProj);
+
+        var_dump($result);
+        print('<br>');
+        var_dump($resultProj);
 
         print('<table>
             <tr>
@@ -42,16 +43,36 @@
 
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                echo '<tr>
-                <td>' . $row["id"] . '</td>' .
+                print('<tr>
+                         <td>' . $row["id"] . '</td>' .
                     '<td>' . $row["Name"] . '</td>' .
                     '<td>' . $row["Projects"] . '</td>
-                </tr>';
+                       </tr>');
             }
         } else {
-            echo "0 results";
+            print('No results');
         }
+        print('</table>');
 
+
+        print('<table>
+            <tr>
+                <th>ID</th>
+                <th>Project</th>
+                <th>Employee(s)</th>
+            </tr>');
+
+        if (mysqli_num_rows($resultProj) > 0) {
+            while ($row = mysqli_fetch_assoc($resultProj)) {
+                print('<tr>
+                         <td>' . $row["id"] . '</td>' .
+                    '<td>' . $row["Project"] . '</td>' .
+                    '<td>' . $row["Employees"] . '</td>
+                       </tr>');
+            }
+        } else {
+            print('No results');
+        }
         print('</table>');
 
         mysqli_close($conn);
