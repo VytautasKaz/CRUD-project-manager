@@ -10,11 +10,10 @@
 </head>
 
 <body>
-    <?php print('<header>
-                <a href="?path=projects/">Projects</a>
-                <a href="?path=employees/">Employees</a>
-            </header>');
-    ?>
+    <header>
+        <a href="?path=projects/">Projects</a>
+        <a href="?path=employees/">Employees</a>
+    </header>
 
     <div class="container">
         <?php
