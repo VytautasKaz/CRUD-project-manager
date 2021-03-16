@@ -36,15 +36,24 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Projects</th>
+                <th>Actions</th>
             </tr>');
 
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     print('<tr>
-                         <td>' . $row["id"] . '</td>' .
-                        '<td>' . $row["Name"] . '</td>' .
-                        '<td>' . $row["Projects"] . '</td>
-                       </tr>');
+                                <td>' . $row['id'] . '</td>
+                                <td>' . $row['Name'] . '</td>
+                                <td>' . $row['Projects'] . '</td>
+                                <td>
+                                        <form action="" method="POST">
+                                            <button type="submit" name="delete" value="' . $row['id'] . '" onclick="return confirm(\'Are you sure?\')">Delete</button>
+                                        </form>
+                                        <form action="" method="POST">
+                                            <button type="submit" name="update" value="">Update</button>
+                                        </form>
+                                </td>
+                           </tr>');
                 }
             } else {
                 print('No results');
@@ -56,15 +65,24 @@
                 <th>ID</th>
                 <th>Project</th>
                 <th>Employee(s)</th>
+                <th>Actions</th>
             </tr>');
 
             if (mysqli_num_rows($resultProj) > 0) {
                 while ($row = mysqli_fetch_assoc($resultProj)) {
                     print('<tr>
-                         <td>' . $row["id"] . '</td>' .
-                        '<td>' . $row["Project"] . '</td>' .
-                        '<td>' . $row["Employees"] . '</td>
-                       </tr>');
+                                <td>' . $row['id'] . '</td>
+                                <td>' . $row['Project'] . '</td>
+                                <td>' . $row['Employees'] . '</td>
+                                <td>
+                                        <form action="" method="POST">
+                                            <button type="submit" name="delete" value="' . $row["id"] . '" onclick="return confirm(\'Are you sure?\')">Delete</button>
+                                        </form>
+                                        <form action="" method="POST">
+                                            <button type="submit" name="update" value="">Update</button>
+                                        </form>
+                                </td>
+                           </tr>');
                 }
             } else {
                 print('No results');
