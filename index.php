@@ -20,14 +20,14 @@
         $serverName = 'localhost';
         $username = 'root';
         $password = 'mysql';
-        $dbName = 'sprint2-db';
+        $dbName = 'sp2db';
 
         $conn = mysqli_connect($serverName, $username, $password, $dbName);
 
-        $sql = 'SELECT id, Name, Projects FROM employees';
+        $sql = 'SELECT id_empl, fname, assigned_project FROM empl';
         $result = mysqli_query($conn, $sql);
 
-        $sqlProj = 'SELECT id, Project, Employees FROM projects';
+        $sqlProj = 'SELECT id_proj, title FROM proj';
         $resultProj = mysqli_query($conn, $sqlProj);
 
         if ($_GET['path'] == 'employees/') {
@@ -42,12 +42,12 @@
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     print('<tr>
-                                <td>' . $row['id'] . '</td>
-                                <td>' . $row['Name'] . '</td>
-                                <td>' . $row['Projects'] . '</td>
+                                <td>' . $row['id_empl'] . '</td>
+                                <td>' . $row['fname'] . '</td>
+                                <td>' . $row['assigned_project'] . '</td>
                                 <td>
                                         <form action="" method="POST">
-                                            <button type="submit" name="delete" value="' . $row['id'] . '" onclick="return confirm(\'Are you sure?\')">Delete</button>
+                                            <button type="submit" name="delete" value="' . $row['id_empl'] . '" onclick="return confirm(\'Are you sure?\')">Delete</button>
                                         </form>
                                         <form action="" method="POST">
                                             <button type="submit" name="update" value="">Update</button>
@@ -71,12 +71,12 @@
             if (mysqli_num_rows($resultProj) > 0) {
                 while ($row = mysqli_fetch_assoc($resultProj)) {
                     print('<tr>
-                                <td>' . $row['id'] . '</td>
-                                <td>' . $row['Project'] . '</td>
-                                <td>' . $row['Employees'] . '</td>
+                                <td>' . $row['id_proj'] . '</td>
+                                <td>' . $row['title'] . '</td>
+                                <td>' . $row['empl_names'] . '</td>
                                 <td>
                                         <form action="" method="POST">
-                                            <button type="submit" name="delete" value="' . $row["id"] . '" onclick="return confirm(\'Are you sure?\')">Delete</button>
+                                            <button type="submit" name="delete" value="' . $row["id_proj"] . '" onclick="return confirm(\'Are you sure?\')">Delete</button>
                                         </form>
                                         <form action="" method="POST">
                                             <button type="submit" name="update" value="">Update</button>
