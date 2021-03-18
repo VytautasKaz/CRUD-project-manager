@@ -42,9 +42,10 @@
             </tr>');
 
             if (mysqli_num_rows($result) > 0) {
+                $counter = 0;
                 while ($row = mysqli_fetch_assoc($result)) {
                     print('<tr>
-                                <td>' . $row['id_empl'] . '</td>
+                                <td>' . ++$counter . '</td>
                                 <td>' . $row['fname'] . '</td>
                                 <td>' . $row['assigned_project'] . '</td>
                                 <td>
