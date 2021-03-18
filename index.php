@@ -27,7 +27,9 @@
         $sql = 'SELECT id_empl, fname, assigned_project FROM empl';
         $result = mysqli_query($conn, $sql);
 
-        $sqlProj = 'SELECT id_proj, title FROM proj';
+        $sqlProj = 'SELECT DISTINCT id_proj, title, group_concat(empl.fname SEPARATOR ", ") AS empname FROM proj
+        LEFT JOIN empl
+        ON proj.title = empl.assigned_project GROUP BY id_proj';
         $resultProj = mysqli_query($conn, $sqlProj);
 
         if ($_GET['path'] == 'employees/') {
@@ -69,11 +71,12 @@
             </tr>');
 
             if (mysqli_num_rows($resultProj) > 0) {
+                $counter = 0;
                 while ($row = mysqli_fetch_assoc($resultProj)) {
                     print('<tr>
-                                <td>' . $row['id_proj'] . '</td>
+                                <td>' . ++$counter . '</td>
                                 <td>' . $row['title'] . '</td>
-                                <td>' . $row['empl_names'] . '</td>
+                                <td>' . $row['empname'] . '</td>
                                 <td>
                                         <form action="" method="POST">
                                             <button type="submit" name="delete" value="' . $row["id_proj"] . '" onclick="return confirm(\'Are you sure?\')">Delete</button>
