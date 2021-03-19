@@ -79,6 +79,21 @@ form > button:hover {
   transition: 0.3s ease;
 }
 
+.new-entry {
+  display: inline-block;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.new-entry > input,
+.new-entry > select {
+  height: 24px;
+}
+
+.new-entry > select {
+  width: 80px;
+}
+
 @media (max-width: 1620px) {
   .container {
     width: 1200px;

@@ -15,6 +15,8 @@
         <a href="?path=employees/">Employees</a>
     </header>
 
+
+
     <div class="container">
         <?php
         $serverName = 'localhost';
@@ -32,6 +34,18 @@
         ON proj.title = empl.assigned_project GROUP BY id_proj';
         $resultProj = mysqli_query($conn, $sqlProj);
 
+        // Generates projects dropdown options when adding a new employee
+
+        function generateOptions($input)
+        {
+            if (mysqli_num_rows($input) > 0) {
+                while ($row = mysqli_fetch_assoc($input)) {
+                    echo "<option value='" . $row['title'] . "'>" . $row['title'] . "</option>";
+                }
+            }
+        }
+
+        // Delete button logic
 
         if (isset($_POST['delete'])) {
             if ($_GET['path'] == 'employees/') {
@@ -40,6 +54,25 @@
                 $stmt = $conn->prepare("DELETE FROM proj WHERE id_proj = ?");
             }
             $stmt->bind_param("i", $_POST['delete']);
+            $stmt->execute();
+            $stmt->close();
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']);
+            die;
+        }
+
+        // Add employee/project logic
+
+        if (isset($_POST['create'])) {
+            if ($_GET['path'] == 'employees/') {
+                $stmt = $conn->prepare("INSERT INTO empl (fname, assigned_project) VALUES (?, ?)");
+                $stmt->bind_param("ss", $fname, $a_project);
+                $fname = $_POST['fname'];
+                $a_project = $_POST['a_proj'];
+            } else {
+                $stmt = $conn->prepare("INSERT INTO proj (title) VALUES (?)");
+                $stmt->bind_param("s", $title);
+                $title = $_POST['new_project'];
+            }
             $stmt->execute();
             $stmt->close();
             header('Location: ' . $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']);
@@ -76,6 +109,16 @@
                 print('No results');
             }
             print('</table>');
+            print('<form class="new-entry" action="" method="POST">
+                        <input type="text" name="fname" placeholder="Enter employee name" />
+                        <select name="a_proj">
+                            <option value=""></option>');
+
+            generateOptions($resultProj);
+
+            print('</select>
+                        <button type="submit" name="create">Create</button>
+                   </form>');
         } else {
             print('<table>
             <tr>
@@ -106,6 +149,10 @@
                 print('No results');
             }
             print('</table>');
+            print('<form class="new-entry" action="" method="POST">
+                        <input type="text" name="new_project" placeholder="Enter project name" />
+                        <button type="submit" name="create">Create</button>
+                   </form>');
         }
 
         mysqli_close($conn);
