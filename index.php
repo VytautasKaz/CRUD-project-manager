@@ -32,10 +32,24 @@
         ON proj.title = empl.assigned_project GROUP BY id_proj';
         $resultProj = mysqli_query($conn, $sqlProj);
 
+
+        if (isset($_POST['delete'])) {
+            if ($_GET['path'] == 'employees/') {
+                $stmt = $conn->prepare("DELETE FROM empl WHERE id_empl = ?");
+            } else {
+                $stmt = $conn->prepare("DELETE FROM proj WHERE id_proj = ?");
+            }
+            $stmt->bind_param("i", $_POST['delete']);
+            $stmt->execute();
+            $stmt->close();
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']);
+            die;
+        }
+
         if ($_GET['path'] == 'employees/') {
             print('<table>
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Name</th>
                 <th>Projects</th>
                 <th>Actions</th>
@@ -65,7 +79,7 @@
         } else {
             print('<table>
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Project</th>
                 <th>Employee(s)</th>
                 <th>Actions</th>
