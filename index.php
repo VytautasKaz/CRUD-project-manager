@@ -132,10 +132,10 @@
                         <button type="submit" name="create">Create</button>
                    </form>');
 
-            // Update employee info
+            // Update employee info logic
 
             if (isset($_POST['update'])) {
-                print('<form class="update-entry" action="" method="POST">
+                print('<form class="new-entry" action="" method="POST">
                             <label>Update name:</label><br>
                             <input type="text" name="fname" /><br>
                             <label>Reassign project:</label><br>
@@ -199,8 +199,10 @@
                         <button type="submit" name="create">Create</button>
                    </form>');
 
+            // Update project title logic
+
             if (isset($_POST['update'])) {
-                print('<form class="update-entry" action="" method="POST">
+                print('<form class="new-entry" action="" method="POST">
                                 <label>Update project title:</label><br>
                                 <input type="text" name="upd_title" /><br>
                                 <button type="submit" name="proj_update" value="' . $_POST['update'] . '">Update</button>
