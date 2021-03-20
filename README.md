@@ -13,7 +13,7 @@ CRUD (create, read, update, delete) app developed using PHP and MySQL database. 
 ### Projects table:
 
 - Add a new project.
-- Update an existing project (change name);
+- Update an existing project (change title).
 - Delete a project from the table.
 
 ## Launch instructions:
