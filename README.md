@@ -21,7 +21,7 @@ CRUD (create, read, update, delete) app developed using PHP and MySQL database. 
 - Clone this repository or download it as a ZIP package.
 - Clone/extract it to your AMPPS (.../AMPPS/www/), XAMPP or other web server platform directory.
 - Import 'sp2db.sql' database into your local MySQL server.
-- Open the app via your preferred web browser (e.g. http://localhost/mysql-db/).
+- Open the app via your preferred web browser (e.g. http://localhost/CRUD-project-manager/).
 
 ## Author:
 
