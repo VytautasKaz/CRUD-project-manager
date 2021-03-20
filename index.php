@@ -1,3 +1,5 @@
+<?php ob_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,6 +21,9 @@
 
     <div class="container">
         <?php
+
+        // Establishing connection to mysql server
+
         $serverName = 'localhost';
         $username = 'root';
         $password = 'mysql';
@@ -30,16 +35,16 @@
         $result = mysqli_query($conn, $sql);
 
         $sqlProj = 'SELECT DISTINCT id_proj, title, group_concat(empl.fname SEPARATOR ", ") AS empname FROM proj
-        LEFT JOIN empl
-        ON proj.title = empl.assigned_project GROUP BY id_proj';
+                    LEFT JOIN empl
+                    ON proj.title = empl.assigned_project GROUP BY id_proj';
         $resultProj = mysqli_query($conn, $sqlProj);
 
-        // Generates projects dropdown options when adding a new employee
+        // Generates dropdown options of existing projects
 
-        function generateOptions($input)
+        function generateOptions($queryRes)
         {
-            if (mysqli_num_rows($input) > 0) {
-                while ($row = mysqli_fetch_assoc($input)) {
+            if (mysqli_num_rows($queryRes) > 0) {
+                while ($row = mysqli_fetch_assoc($queryRes)) {
                     echo "<option value='" . $row['title'] . "'>" . $row['title'] . "</option>";
                 }
             }
@@ -78,10 +83,12 @@
             if (!empty($fname) || !empty($title)) {
                 $stmt->execute();
                 $stmt->close();
-                header('Location: ' . $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']);
+                print(header('Location: ' . $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']));
                 die;
             }
         }
+
+        // Generating table for employees/projects
 
         if ($_GET['path'] == 'employees/') {
             print('<table>
@@ -104,7 +111,7 @@
                                             <button type="submit" name="delete" value="' . $row['id_empl'] . '" onclick="return confirm(\'Are you sure?\')">Delete</button>
                                         </form>
                                         <form action="" method="POST">
-                                            <button type="submit" name="update" value="">Update</button>
+                                            <button type="submit" name="update" value="' . $row['id_empl'] . '">Update</button>
                                         </form>
                                 </td>
                            </tr>');
@@ -113,6 +120,7 @@
                 print('No results');
             }
             print('</table>');
+
             print('<form class="new-entry" action="" method="POST">
                         <input type="text" name="fname" placeholder="Enter employee name" />
                         <select name="a_proj">
@@ -123,6 +131,38 @@
             print('</select>
                         <button type="submit" name="create">Create</button>
                    </form>');
+
+            // Update employee info
+
+            if (isset($_POST['update'])) {
+                print('<form class="update-entry" action="" method="POST">
+                            <label>Update name:</label><br>
+                            <input type="text" name="fname" /><br>
+                            <label>Reassign project:</label><br>
+                            <select name="a_proj">
+                                <option value="" placeholder="Select"></option>');
+
+                $title_result = mysqli_query($conn, 'SELECT title FROM proj');
+
+                generateOptions($title_result);
+
+                print('</select><br>
+                                <button type="submit" name="emp_update" value="' . $_POST['update'] . '">Update</button>
+                        </form>');
+            }
+            if (isset($_POST['emp_update'])) {
+                $id = $_POST['emp_update'];
+                $fname = $_POST['fname'];
+                $proj = $_POST['a_proj'];
+                $stmt = $conn->prepare("UPDATE empl SET fname = ?, assigned_project = ? WHERE id_empl = ?");
+                if (!empty($fname)) {
+                    $stmt->bind_param("ssi", $fname, $proj, $id);
+                    $stmt->execute();
+                    $stmt->close();
+                    header('Location: ' . $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']);
+                    die;
+                }
+            }
         } else {
             print('<table>
             <tr>
@@ -144,7 +184,7 @@
                                             <button type="submit" name="delete" value="' . $row["id_proj"] . '" onclick="return confirm(\'Are you sure?\')">Delete</button>
                                         </form>
                                         <form action="" method="POST">
-                                            <button type="submit" name="update" value="">Update</button>
+                                            <button type="submit" name="update" value="' . $row["id_proj"] . '">Update</button>
                                         </form>
                                 </td>
                            </tr>');
@@ -153,10 +193,31 @@
                 print('No results');
             }
             print('</table>');
+
             print('<form class="new-entry" action="" method="POST">
-                        <input type="text" name="new_project" placeholder="Enter project name" />
+                        <input type="text" name="new_project" placeholder="Enter project title" />
                         <button type="submit" name="create">Create</button>
                    </form>');
+
+            if (isset($_POST['update'])) {
+                print('<form class="update-entry" action="" method="POST">
+                                <label>Update project title:</label><br>
+                                <input type="text" name="upd_title" /><br>
+                                <button type="submit" name="proj_update" value="' . $_POST['update'] . '">Update</button>
+                            </form>');
+            }
+            if (isset($_POST['proj_update'])) {
+                $id = $_POST['proj_update'];
+                $title = $_POST['upd_title'];
+                $stmt = $conn->prepare("UPDATE proj SET title = ? WHERE id_proj = ?");
+                if (!empty($title)) {
+                    $stmt->bind_param("si", $title, $id);
+                    $stmt->execute();
+                    $stmt->close();
+                    header('Location: ' . $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']);
+                    die;
+                }
+            }
         }
 
         mysqli_close($conn);
