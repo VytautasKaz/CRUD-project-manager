@@ -111,6 +111,7 @@
                                             <button type="submit" name="delete" value="' . $row['id_empl'] . '" onclick="return confirm(\'Are you sure?\')">Delete</button>
                                         </form>
                                         <form action="" method="POST">
+                                            <input type="hidden" name="current_name" value="' . $row['fname'] . '" />
                                             <button type="submit" name="update" value="' . $row['id_empl'] . '">Update</button>
                                         </form>
                                 </td>
@@ -135,12 +136,12 @@
             // Update employee info logic
 
             if (isset($_POST['update'])) {
-                print('<form class="new-entry" action="" method="POST">
+                print('<form class="new-entry update-entry" action="" method="POST">
                             <label>Update name:</label><br>
-                            <input type="text" name="fname" /><br>
+                            <input type="text" name="fname" value="' . $_POST['current_name'] . '"/><br>
                             <label>Reassign project:</label><br>
                             <select name="a_proj">
-                                <option value="" placeholder="Select"></option>');
+                                <option></option>');
 
                 $title_result = mysqli_query($conn, 'SELECT title FROM proj');
 
@@ -184,6 +185,7 @@
                                             <button type="submit" name="delete" value="' . $row["id_proj"] . '" onclick="return confirm(\'Are you sure?\')">Delete</button>
                                         </form>
                                         <form action="" method="POST">
+                                            <input type="hidden" name="current_project" value="' . $row['title'] . '" />
                                             <button type="submit" name="update" value="' . $row["id_proj"] . '">Update</button>
                                         </form>
                                 </td>
@@ -202,9 +204,9 @@
             // Update project title logic
 
             if (isset($_POST['update'])) {
-                print('<form class="new-entry" action="" method="POST">
+                print('<form class="new-entry update-entry" action="" method="POST">
                                 <label>Update project title:</label><br>
-                                <input type="text" name="upd_title" /><br>
+                                <input type="text" name="upd_title" value="' . $_POST['current_project'] . '"/><br>
                                 <button type="submit" name="proj_update" value="' . $_POST['update'] . '">Update</button>
                             </form>');
             }
@@ -223,7 +225,6 @@
         }
 
         mysqli_close($conn);
-
         ?>
     </div>
 </body>

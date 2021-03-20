@@ -82,7 +82,7 @@ form > button:hover {
 .new-entry {
   display: inline-block;
   width: 100%;
-  margin-top: 10px;
+  margin: 10px 0 10px 0;
 }
 
 .new-entry > input,
@@ -92,6 +92,15 @@ form > button:hover {
 
 .new-entry > select {
   width: 80px;
+}
+
+.update-entry > label {
+  font-size: 15px;
+}
+
+.update-entry > input,
+.update-entry > select {
+  margin: 5px 0;
 }
 
 @media (max-width: 1620px) {
