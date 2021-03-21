@@ -2,15 +2,15 @@
 
 ## Description:
 
-CRUD (create, read, update, delete) app developed using PHP and MySQL database. Supported actions:
+CRUD (create, read, update, delete) app developed using PHP and MySQL database. Available features:
 
-### Employees table:
+Employees table:
 
 - Add new employees.
 - Update existing employees (change name, assign/reassign a project).
 - Delete employees from the table.
 
-### Projects table:
+Projects table:
 
 - Add a new project.
 - Update an existing project (change title).
